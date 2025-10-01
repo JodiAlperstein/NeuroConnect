@@ -34,19 +34,85 @@
         ];
 
         function NeuroConnectApp() {
-            const [currentScreen, setCurrentScreen] = useState('onboarding');
+            const [currentScreen, setCurrentScreen] = useState('guide');
             const [selectedInterests, setSelectedInterests] = useState([]);
             const [showReportStep2, setShowReportStep2] = useState(false);
+            const [selectedMood, setSelectedMood] = useState(null);
 
             const navigate = (screen) => setCurrentScreen(screen);
+
+            const GuideScreen = () => (
+                <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-6 max-w-md mx-auto overflow-y-auto">
+                    <h1 className="text-3xl font-bold mb-2 text-gray-900">NeuroConnect Prototype</h1>
+                    <p className="text-sm text-gray-600 mb-6">Interactive Demo Guide</p>
+                    
+                    <div className="bg-white rounded-xl shadow-lg p-5 mb-4">
+                        <h2 className="font-bold text-lg mb-3 text-blue-600">User Perspectives</h2>
+                        <div className="space-y-2">
+                            <button onClick={() => navigate('onboarding')} className="w-full text-left p-3 bg-blue-50 rounded-lg hover:bg-blue-100">
+                                <span className="font-semibold">Teen (ND Individual)</span>
+                                <p className="text-sm text-gray-600">Onboarding, Home, Create, Find Friends</p>
+                            </button>
+                            <button onClick={() => navigate('parent')} className="w-full text-left p-3 bg-green-50 rounded-lg hover:bg-green-100">
+                                <span className="font-semibold">Parent Dashboard</span>
+                                <p className="text-sm text-gray-600">Monitoring, Safety, Pricing</p>
+                            </button>
+                            <button onClick={() => navigate('sibling')} className="w-full text-left p-3 bg-purple-50 rounded-lg hover:bg-purple-100">
+                                <span className="font-semibold">Sibling View</span>
+                                <p className="text-sm text-gray-600">Support for brothers/sisters</p>
+                            </button>
+                            <button onClick={() => navigate('grandparent')} className="w-full text-left p-3 bg-yellow-50 rounded-lg hover:bg-yellow-100">
+                                <span className="font-semibold">Extended Family</span>
+                                <p className="text-sm text-gray-600">Grandparent coordination</p>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="bg-white rounded-xl shadow-lg p-5 mb-4">
+                        <h2 className="font-bold text-lg mb-3 text-orange-600">Daily Features</h2>
+                        <button onClick={() => navigate('checkin')} className="w-full text-left p-3 bg-orange-50 rounded-lg hover:bg-orange-100">
+                            <span className="font-semibold">Daily Check-In</span>
+                            <p className="text-sm text-gray-600">Mood tracking with safety integration</p>
+                        </button>
+                    </div>
+
+                    <div className="bg-white rounded-xl shadow-lg p-5 mb-4">
+                        <h2 className="font-bold text-lg mb-3 text-purple-600">Marketplace & Services</h2>
+                        <div className="space-y-2">
+                            <button onClick={() => navigate('marketplace')} className="w-full text-left p-3 bg-purple-50 rounded-lg hover:bg-purple-100">
+                                <span className="font-semibold">Content Marketplace</span>
+                                <p className="text-sm text-gray-600">Courses, workshops</p>
+                            </button>
+                            <button onClick={() => navigate('services')} className="w-full text-left p-3 bg-purple-50 rounded-lg hover:bg-purple-100">
+                                <span className="font-semibold">Service Directory</span>
+                                <p className="text-sm text-gray-600">Find providers</p>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="bg-white rounded-xl shadow-lg p-5 mb-4">
+                        <h2 className="font-bold text-lg mb-3 text-red-600">Safety Features</h2>
+                        <div className="space-y-2">
+                            <button onClick={() => navigate('safety')} className="w-full text-left p-3 bg-red-50 rounded-lg hover:bg-red-100">
+                                <span className="font-semibold">Safety Controls</span>
+                                <p className="text-sm text-gray-600">Content filters, privacy</p>
+                            </button>
+                            <button onClick={() => navigate('report')} className="w-full text-left p-3 bg-red-50 rounded-lg hover:bg-red-100">
+                                <span className="font-semibold">Report Flow</span>
+                                <p className="text-sm text-gray-600">2-step reporting</p>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
 
             const OnboardingScreen = () => (
                 <div className="min-h-screen bg-white p-4 max-w-md mx-auto">
                     <div className="flex justify-between items-center mb-8">
-                        <button className="text-blue-500">Skip</button>
+                        <button onClick={() => navigate('guide')} className="text-blue-500">Skip</button>
                         <span className="text-gray-500">1 of 3</span>
                     </div>
-                    <h1 className="text-3xl font-bold mb-2">Tell us what you love! 🎨</h1>
+                    <h1 className="text-3xl font-bold mb-2">Tell us what you love!</h1>
                     <p className="text-gray-600 mb-8">Pick as many as you want</p>
                     <div className="grid grid-cols-3 gap-4 mb-8">
                         {interests.map((interest) => (
@@ -61,8 +127,8 @@
                                 }}
                                 className={`p-6 rounded-xl border-2 transition-all ${
                                     selectedInterests.includes(interest.name)
-                                        ? 'border-blue-500 bg-blue-50 scale-105'
-                                        : 'border-gray-200 hover:border-gray-300'
+                                        ? 'border-blue-500 bg-blue-50'
+                                        : 'border-gray-200'
                                 }`}
                             >
                                 <div className="text-4xl mb-2">{interest.emoji}</div>
@@ -70,7 +136,6 @@
                             </button>
                         ))}
                     </div>
-                    <button className="text-blue-500 mb-4">See more interests...</button>
                     <button
                         onClick={() => navigate('home')}
                         disabled={selectedInterests.length < 3}
@@ -88,692 +153,340 @@
             const HomeScreen = () => (
                 <div className="min-h-screen bg-white max-w-md mx-auto">
                     <div className="sticky top-0 bg-white border-b p-4 flex justify-between items-center">
-                        <span className="text-2xl">☰</span>
+                        <span onClick={() => navigate('guide')} className="text-2xl cursor-pointer">☰</span>
                         <h1 className="font-bold text-xl">NeuroConnect</h1>
                         <div className="flex gap-3">
                             <span className="text-xl">🔍</span>
                             <span className="text-xl">🔔</span>
-                            <span className="text-xl">👤</span>
                         </div>
                     </div>
-                    <div className="p-4 overflow-x-auto">
-                        <p className="text-sm font-semibold mb-3">Stories</p>
-                        <div className="flex gap-3 pb-4">
-                            {['Sarah', 'Mike', 'Emma', 'You'].map((name, i) => (
-                                <div key={name} className="flex flex-col items-center">
-                                    <div className={`w-16 h-16 rounded-full flex items-center justify-center text-2xl ${
-                                        name === 'You' ? 'bg-gray-200' : 'bg-gradient-to-br from-purple-400 to-blue-500 text-white'
-                                    }`}>
-                                        {name === 'You' ? '+' : ['🎨', '🎮', '🎵'][i]}
-                                    </div>
-                                    <span className="text-xs mt-1">{name}</span>
-                                </div>
-                            ))}
+                    
+                    <div className="bg-gradient-to-r from-orange-100 to-yellow-100 p-4 border-b cursor-pointer" onClick={() => navigate('checkin')}>
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="font-semibold">How's your day?</p>
+                                <p className="text-sm text-gray-600">Tap to check in</p>
+                            </div>
+                            <div className="text-3xl">👋</div>
                         </div>
                     </div>
-                    <div className="border-t pt-4 pb-20">
-                        <div className="bg-white m-4 rounded-xl shadow-sm border p-4">
-                            <div className="bg-gray-900 h-64 rounded-lg flex items-center justify-center text-white mb-3">
+
+                    <div className="p-4">
+                        <div className="bg-white border rounded-xl p-4 mb-4">
+                            <div className="bg-gray-900 h-48 rounded-lg flex items-center justify-center text-white mb-3">
                                 <div className="text-center">
                                     <div className="text-4xl mb-2">🎮</div>
-                                    <p>Check out my Minecraft build!</p>
+                                    <p>Check out my build!</p>
                                 </div>
                             </div>
-                            <p className="text-sm text-gray-600 mb-3">Posted by @Jake • Gaming</p>
-                            <div className="flex gap-6 text-gray-600">
-                                <button className="flex items-center gap-2">❤️ 24</button>
-                                <button className="flex items-center gap-2">💬 5</button>
-                                <button className="flex items-center gap-2">🔄 Share</button>
-                            </div>
-                        </div>
-                        <div className="bg-white m-4 rounded-xl shadow-sm border p-4">
-                            <p className="mb-3">"Just finished this painting in art class today!"</p>
-                            <div className="bg-gradient-to-br from-blue-200 to-purple-200 h-48 rounded-lg mb-3"></div>
-                            <p className="text-sm text-gray-600 mb-3">Posted by @Sarah • Art</p>
-                            <div className="flex gap-6 text-gray-600">
-                                <button className="flex items-center gap-2">❤️ 31</button>
-                                <button className="flex items-center gap-2">💬 8</button>
-                                <button className="flex items-center gap-2">🔄 Share</button>
-                            </div>
+                            <p className="text-sm text-gray-600">Posted by @Jake</p>
                         </div>
                     </div>
+
                     <nav className="fixed bottom-0 left-0 right-0 bg-white border-t py-3 max-w-md mx-auto">
-                        <div className="flex justify-around items-center px-4">
-                            <button className="flex flex-col items-center text-blue-500">
-                                <span className="text-2xl">🏠</span>
-                                <span className="text-xs mt-1">Home</span>
-                            </button>
-                            <button onClick={() => navigate('find-friends')} className="flex flex-col items-center text-gray-400">
-                                <span className="text-2xl">🎯</span>
-                            </button>
-                            <button onClick={() => navigate('create')} className="flex flex-col items-center text-gray-400">
-                                <span className="text-3xl">➕</span>
-                            </button>
-                            <button onClick={() => navigate('circles')} className="flex flex-col items-center text-gray-400">
-                                <span className="text-2xl">💬</span>
-                            </button>
-                            <button onClick={() => navigate('parent')} className="flex flex-col items-center text-gray-400">
-                                <span className="text-2xl">👤</span>
-                            </button>
+                        <div className="flex justify-around px-4">
+                            <button className="text-blue-500">🏠</button>
+                            <button onClick={() => navigate('find-friends')}>🎯</button>
+                            <button onClick={() => navigate('create')}>➕</button>
+                            <button onClick={() => navigate('circles')}>💬</button>
+                            <button onClick={() => navigate('parent')}>👤</button>
                         </div>
                     </nav>
+                </div>
+            );
+
+            const DailyCheckInScreen = () => (
+                <div className="min-h-screen bg-white max-w-md mx-auto">
+                    <div className="flex items-center gap-3 p-4 border-b">
+                        <button onClick={() => navigate('home')} className="text-2xl">←</button>
+                        <h1 className="font-bold text-xl">How's Your Day?</h1>
+                    </div>
+                    
+                    <div className="p-6">
+                        <p className="text-center text-gray-600 mb-8">Pick how you're feeling</p>
+                        
+                        <div className="grid grid-cols-2 gap-4 mb-8">
+                            {[
+                                { emoji: '😊', label: 'Great' },
+                                { emoji: '😐', label: 'Okay' },
+                                { emoji: '😔', label: 'Not great' },
+                                { emoji: '😟', label: 'Struggling' }
+                            ].map((mood) => (
+                                <button
+                                    key={mood.label}
+                                    onClick={() => setSelectedMood(mood.label)}
+                                    className={`p-8 rounded-2xl border-4 ${
+                                        selectedMood === mood.label
+                                            ? 'border-blue-500'
+                                            : 'border-gray-200'
+                                    }`}
+                                >
+                                    <div className="text-6xl mb-3">{mood.emoji}</div>
+                                    <div className="font-semibold">{mood.label}</div>
+                                </button>
+                            ))}
+                        </div>
+
+                        {selectedMood && (
+                            <div className="space-y-4">
+                                <textarea
+                                    className="w-full border-2 rounded-xl p-4 h-32"
+                                    placeholder="Want to share what's on your mind? (optional)"
+                                />
+
+                                {(selectedMood === 'Struggling' || selectedMood === 'Not great') && (
+                                    <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-4">
+                                        <p className="font-semibold mb-2">We're here for you</p>
+                                        <p className="text-sm mb-3">Sometimes talking helps:</p>
+                                        <div className="space-y-2 text-sm">
+                                            <div className="bg-white p-3 rounded-lg">
+                                                <p className="font-medium">Crisis Text Line</p>
+                                                <p className="text-gray-600">Text HOME to 741741</p>
+                                            </div>
+                                            <div className="bg-white p-3 rounded-lg">
+                                                <p className="font-medium">988 Lifeline</p>
+                                                <p className="text-gray-600">Call or text 988</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
+                                <button
+                                    onClick={() => navigate('home')}
+                                    className="w-full py-4 bg-blue-500 text-white rounded-xl font-semibold"
+                                >
+                                    Save Check-In
+                                </button>
+                            </div>
+                        )}
+                    </div>
                 </div>
             );
 
             const CreateScreen = () => (
                 <div className="min-h-screen bg-black max-w-md mx-auto">
                     <div className="flex justify-between items-center p-4 text-white">
-                        <button onClick={() => navigate('home')} className="flex items-center gap-2">
-                            ✕ Cancel
-                        </button>
-                        <button className="flex items-center gap-2">✓ Next</button>
+                        <button onClick={() => navigate('home')}>✕ Cancel</button>
+                        <button>✓ Next</button>
                     </div>
-                    <div className="relative h-96 bg-gray-800 mx-4 rounded-lg flex items-center justify-center">
+                    <div className="h-96 bg-gray-800 mx-4 rounded-lg flex items-center justify-center">
                         <div className="text-white text-center">
                             <div className="text-6xl mb-4">📷</div>
-                            <p className="text-lg">Camera View</p>
-                            <p className="text-sm text-gray-400 mt-2">Recording: 0:15</p>
+                            <p>Camera View</p>
                         </div>
-                    </div>
-                    <div className="flex justify-around text-white mt-6 px-4">
-                        <button className="flex flex-col items-center">
-                            <div className="text-2xl mb-1">🎨</div>
-                            <span className="text-xs">Filters</span>
-                        </button>
-                        <button className="flex flex-col items-center">
-                            <div className="text-2xl mb-1">✨</div>
-                            <span className="text-xs">Effects</span>
-                        </button>
-                        <button className="flex flex-col items-center">
-                            <div className="text-2xl mb-1">🎵</div>
-                            <span className="text-xs">Music</span>
-                        </button>
-                    </div>
-                    <div className="flex justify-center mt-8">
-                        <button className="w-20 h-20 rounded-full border-4 border-white bg-red-500 hover:bg-red-600 transition-colors flex items-center justify-center">
-                            <div className="w-16 h-16 rounded-full bg-red-600"></div>
-                        </button>
-                    </div>
-                    <div className="text-center mt-4 text-yellow-300 text-sm flex items-center justify-center gap-2">
-                        <span>💡</span> Tip: Show us your hobby!
-                    </div>
-                    <div className="flex justify-around text-white mt-6 px-12">
-                        <button className="flex flex-col items-center">
-                            <div className="text-2xl mb-1">🔄</div>
-                            <span className="text-xs">Flip</span>
-                        </button>
-                        <button className="flex flex-col items-center">
-                            <div className="text-2xl mb-1">⚡</div>
-                            <span className="text-xs">Flash</span>
-                        </button>
-                        <button className="flex flex-col items-center">
-                            <div className="text-2xl mb-1">📷</div>
-                            <span className="text-xs">Photo</span>
-                        </button>
                     </div>
                 </div>
             );
 
             const FindFriendsScreen = () => (
                 <div className="min-h-screen bg-white max-w-md mx-auto">
-                    <div className="flex justify-between items-center p-4 border-b">
-                        <button onClick={() => navigate('home')} className="flex items-center gap-2">
-                            ← Find Friends
-                        </button>
-                        <button>Filter</button>
+                    <div className="p-4 border-b">
+                        <button onClick={() => navigate('home')}>← Find Friends</button>
                     </div>
                     <div className="p-4">
-                        <p className="text-lg font-semibold mb-4">People who love Gaming 🎮</p>
-                        {[
-                            { name: 'Mike', age: 16, location: 'California', interests: 'Gaming, Music, Pets', bio: 'Minecraft builder, looking for squad members!' },
-                            { name: 'Alex', age: 15, location: 'Oregon', interests: 'Gaming, Art, Movies', bio: 'Love Zelda and Pokemon!' },
-                            { name: 'Jordan', age: 17, location: 'Texas', interests: 'Gaming, Sports', bio: 'Fortnite anyone?' }
-                        ].map((person) => (
-                            <div key={person.name} className="bg-white border rounded-xl p-4 mb-4 shadow-sm">
-                                <div className="flex gap-4 mb-3">
-                                    <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-purple-400 rounded-full flex items-center justify-center text-2xl">📸</div>
-                                    <div className="flex-1">
-                                        <h3 className="font-semibold">{person.name}, {person.age} • {person.location}</h3>
-                                        <p className="text-sm text-gray-600">Loves: {person.interests}</p>
-                                    </div>
-                                </div>
-                                <p className="text-sm mb-4 text-gray-700">"{person.bio}"</p>
-                                <div className="flex gap-3">
-                                    <button className="flex-1 py-2 border-2 border-gray-300 rounded-lg font-medium hover:bg-gray-50">✕ Pass</button>
-                                    <button className="flex-1 py-2 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-600">👋 Say Hi</button>
-                                </div>
+                        <p className="text-lg font-semibold mb-4">People who love Gaming</p>
+                        <div className="border rounded-xl p-4 mb-4">
+                            <h3 className="font-semibold">Mike, 16</h3>
+                            <p className="text-sm text-gray-600">Minecraft builder!</p>
+                            <div className="flex gap-3 mt-3">
+                                <button className="flex-1 py-2 border rounded-lg">✕ Pass</button>
+                                <button className="flex-1 py-2 bg-blue-500 text-white rounded-lg">👋 Say Hi</button>
                             </div>
-                        ))}
+                        </div>
                     </div>
                 </div>
             );
 
-            const FamilyCoordinationScreen = () => (
+            const SiblingScreen = () => (
                 <div className="min-h-screen bg-white max-w-md mx-auto">
-                    <div className="flex justify-between items-center p-4 border-b">
-                        <div className="flex items-center gap-2">
-                            <span className="text-2xl">☰</span>
-                            <h1 className="font-bold text-xl">Family Space</h1>
-                        </div>
-                        <span className="text-2xl">⚙️</span>
+                    <div className="p-4 border-b">
+                        <button onClick={() => navigate('guide')}>←</button>
+                        <h1 className="font-bold text-xl mt-2">Sibling Space</h1>
                     </div>
                     <div className="p-4">
-                        <h2 className="font-semibold mb-4">Your Family Group</h2>
-                        <div className="bg-purple-50 border-2 border-purple-200 rounded-xl p-4 mb-4">
-                            <div className="flex items-start gap-3">
-                                <span className="text-2xl">💬</span>
-                                <div className="flex-1">
-                                    <h3 className="font-semibold mb-1">Family Chat</h3>
-                                    <p className="text-sm text-gray-700">"Don't forget about dinner plans tomorrow!"</p>
-                                    <p className="text-xs text-gray-500 mt-1">Grandma Ruth • 2h ago</p>
-                                </div>
-                            </div>
+                        <div className="bg-purple-100 rounded-xl p-5 mb-6">
+                            <h2 className="font-bold text-xl mb-2">Hey Alex!</h2>
+                            <p className="text-gray-700">A space just for you</p>
                         </div>
-                        <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 mb-4">
-                            <div className="flex items-start gap-3">
-                                <span className="text-2xl">📸</span>
-                                <div className="flex-1">
-                                    <h3 className="font-semibold mb-1">Shared Updates</h3>
-                                    <p className="text-sm text-gray-700">Jamie posted a new painting</p>
-                                    <button className="text-sm text-blue-600 font-medium mt-1">View Photo</button>
-                                    <p className="text-xs text-gray-500 mt-1">5h ago</p>
-                                </div>
-                            </div>
+                        <div className="border rounded-xl p-4 mb-4">
+                            <h4 className="font-semibold mb-2">Siblings Support Circle</h4>
+                            <p className="text-sm text-gray-600">For siblings of ND teens</p>
                         </div>
-                        <div className="bg-green-50 border-2 border-green-200 rounded-xl p-4 mb-4">
-                            <div className="flex items-start gap-3">
-                                <span className="text-2xl">🎉</span>
-                                <div className="flex-1">
-                                    <h3 className="font-semibold mb-1">Celebrations</h3>
-                                    <p className="text-sm text-gray-700">Jamie earned "Artist" badge</p>
-                                    <div className="flex gap-2 mt-2">
-                                        <button className="text-xl">❤️</button>
-                                        <button className="text-xl">🎉</button>
-                                        <button className="text-xl">👏</button>
-                                    </div>
-                                </div>
-                            </div>
+                    </div>
+                </div>
+            );
+
+            const GrandparentScreen = () => (
+                <div className="min-h-screen bg-white max-w-md mx-auto">
+                    <div className="p-4 border-b">
+                        <button onClick={() => navigate('guide')}>←</button>
+                        <h1 className="font-bold text-xl mt-2">Family Updates</h1>
+                    </div>
+                    <div className="p-4">
+                        <div className="bg-yellow-100 rounded-xl p-5 mb-6">
+                            <h2 className="font-bold text-xl">Hi Grandma Ruth!</h2>
+                            <p>See what Jamie's been up to</p>
                         </div>
-                        <div className="mb-4">
-                            <h3 className="font-semibold mb-3">Family Members (6)</h3>
-                            <div className="flex gap-3 overflow-x-auto pb-2">
-                                {['Jamie', 'Mom', 'Dad', 'Ruth', 'Uncle', 'Aunt'].map((name) => (
-                                    <div key={name} className="flex flex-col items-center">
-                                        <div className="w-14 h-14 bg-gradient-to-br from-purple-300 to-blue-300 rounded-full flex items-center justify-center text-xl">👤</div>
-                                        <span className="text-xs mt-1">{name}</span>
-                                    </div>
-                                ))}
-                            </div>
+                        <div className="bg-green-50 border-2 border-green-200 rounded-xl p-4 mb-3">
+                            <p className="font-semibold">Jamie posted new artwork</p>
                         </div>
-                        <button className="w-full py-3 border-2 border-dashed border-gray-300 rounded-xl text-gray-600 font-medium hover:border-gray-400">+ Invite Family Member</button>
                     </div>
                 </div>
             );
 
             const ParentDashboardScreen = () => (
                 <div className="min-h-screen bg-white max-w-md mx-auto pb-20">
-                    <div className="flex justify-between items-center p-4 border-b">
+                    <div className="p-4 border-b flex justify-between">
                         <div className="flex items-center gap-2">
-                            <span className="text-2xl cursor-pointer" onClick={() => navigate('home')}>☰</span>
+                            <span onClick={() => navigate('guide')} className="text-2xl cursor-pointer">☰</span>
                             <h1 className="font-bold text-xl">Your Family</h1>
                         </div>
-                        <span className="text-2xl cursor-pointer" onClick={() => navigate('safety')}>⚙️</span>
+                        <span onClick={() => navigate('safety')} className="text-2xl cursor-pointer">⚙️</span>
                     </div>
                     <div className="p-4">
                         <h2 className="font-semibold mb-3">Jamie's Week</h2>
-                        <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-4">
-                            <div className="space-y-2">
-                                <p className="flex items-center gap-2">🎉 Made 2 new friends</p>
-                                <p className="flex items-center gap-2">📹 Posted 5 videos</p>
-                                <p className="flex items-center gap-2">⭐ Earned "Creative" badge</p>
-                            </div>
+                        <div className="bg-green-50 border rounded-xl p-4 mb-4">
+                            <p>🎉 Made 2 new friends</p>
+                            <p>📹 Posted 5 videos</p>
+                            <p>💭 3 daily check-ins</p>
                         </div>
-                        <h2 className="font-semibold mb-3">Pending Actions</h2>
-                        <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 mb-4">
-                            <div className="flex items-start gap-2">
-                                <span className="text-2xl">🔔</span>
-                                <div className="flex-1">
-                                    <p className="text-sm mb-2">Jamie got a friend request from Mike</p>
-                                    <div className="flex gap-2">
-                                        <button className="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium">View Profile</button>
-                                        <button className="px-3 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium">Approve</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <h2 className="font-semibold mb-3">Your Community</h2>
-                        <div className="space-y-3 mb-4">
-                            <div className="border rounded-xl p-4">
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <h3 className="font-medium">💬 ADHD Parent Support</h3>
-                                        <p className="text-sm text-gray-600">12 new posts</p>
-                                    </div>
-                                    <button className="text-blue-500 font-medium text-sm">Join</button>
-                                </div>
-                            </div>
-                            <div className="border rounded-xl p-4">
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <h3 className="font-medium">💬 IEP Strategies</h3>
-                                        <p className="text-sm text-gray-600">8 new posts</p>
-                                    </div>
-                                    <span className="text-green-500 text-sm">Following</span>
-                                </div>
-                            </div>
-                        </div>
-                        <h2 className="font-semibold mb-3">Resources</h2>
-                        <div className="border rounded-xl p-4 mb-4">
-                            <h3 className="font-medium mb-1">📚 New Course: Executive Function Skills</h3>
-                            <p className="text-sm text-gray-600 mb-2">Dr. Sarah Chen</p>
-                            <button onClick={() => navigate('marketplace')} className="text-blue-500 font-medium text-sm">View • $79</button>
-                        </div>
-                        <button className="w-full py-3 border-2 border-gray-300 rounded-xl font-medium">📊 View Full Activity</button>
-                        <button onClick={() => navigate('pricing')} className="w-full py-3 mt-3 bg-blue-500 text-white rounded-xl font-medium">View Pricing Options</button>
+                        <button onClick={() => navigate('pricing')} className="w-full py-3 bg-blue-500 text-white rounded-xl font-medium">
+                            View Pricing
+                        </button>
+                        <button onClick={() => navigate('marketplace')} className="w-full py-3 mt-3 border rounded-xl">
+                            Browse Courses
+                        </button>
                     </div>
                 </div>
             );
 
             const SafetyControlsScreen = () => (
                 <div className="min-h-screen bg-white max-w-md mx-auto">
-                    <div className="flex items-center gap-3 p-4 border-b">
-                        <button onClick={() => navigate('parent')} className="text-2xl">←</button>
-                        <h1 className="font-bold text-xl">Safety & Privacy</h1>
+                    <div className="p-4 border-b">
+                        <button onClick={() => navigate('parent')}>←</button>
+                        <h1 className="font-bold text-xl mt-2">Safety & Privacy</h1>
                     </div>
-                    <div className="p-4 space-y-6">
-                        <div>
-                            <h2 className="font-semibold mb-3">Content Filters</h2>
-                            <div className="border rounded-xl p-4">
-                                <div className="flex justify-between items-center mb-2">
-                                    <span className="font-medium">Moderate</span>
-                                    <div className="flex gap-1">
-                                        <div className="w-3 h-3 bg-gray-800 rounded-full"></div>
-                                        <div className="w-3 h-3 bg-gray-800 rounded-full"></div>
-                                        <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
-                                    </div>
-                                </div>
-                                <p className="text-sm text-gray-600 mb-2">Some words blocked</p>
-                                <button className="text-blue-500 text-sm font-medium">Adjust Level →</button>
-                            </div>
+                    <div className="p-4">
+                        <h2 className="font-semibold mb-3">Content Filters</h2>
+                        <div className="border rounded-xl p-4 mb-4">
+                            <p className="font-medium mb-2">Moderate</p>
+                            <p className="text-sm text-gray-600">AI theme detection active</p>
                         </div>
-                        <div>
-                            <h2 className="font-semibold mb-3">New Connections</h2>
-                            <div className="border rounded-xl p-4 space-y-3">
-                                <label className="flex items-start gap-3">
-                                    <input type="checkbox" defaultChecked className="mt-1" />
-                                    <span className="text-sm">Notify me when Jamie gets a friend request</span>
-                                </label>
-                                <label className="flex items-start gap-3">
-                                    <input type="checkbox" defaultChecked className="mt-1" />
-                                    <span className="text-sm">I approve new friends (Jamie can suggest)</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div>
-                            <h2 className="font-semibold mb-3">Activity Visibility</h2>
-                            <div className="border rounded-xl p-4 space-y-3">
-                                <label className="flex items-start gap-3">
-                                    <input type="checkbox" defaultChecked className="mt-1" />
-                                    <span className="text-sm">🔵 I can see Jamie's posts</span>
-                                </label>
-                                <label className="flex items-start gap-3">
-                                    <input type="checkbox" defaultChecked className="mt-1" />
-                                    <span className="text-sm">Jamie knows I can see (no secret monitoring)</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div>
-                            <h2 className="font-semibold mb-3">Notifications</h2>
-                            <div className="border rounded-xl p-4 space-y-3">
-                                <label className="flex items-start gap-3">
-                                    <input type="checkbox" defaultChecked className="mt-1" />
-                                    <span className="text-sm">Flagged content</span>
-                                </label>
-                                <label className="flex items-start gap-3">
-                                    <input type="checkbox" defaultChecked className="mt-1" />
-                                    <span className="text-sm">New friend requests</span>
-                                </label>
-                                <label className="flex items-start gap-3">
-                                    <input type="checkbox" className="mt-1" />
-                                    <span className="text-sm">Every post Jamie makes</span>
-                                </label>
-                                <label className="flex items-start gap-3">
-                                    <input type="checkbox" className="mt-1" />
-                                    <span className="text-sm">Daily summary only</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-                            <p className="text-sm flex items-start gap-2">
-                                <span>💡</span>
-                                <span>Jamie can always report something they're uncomfortable with, even if you don't see it.</span>
-                            </p>
-                        </div>
-                        <button onClick={() => navigate('report')} className="w-full text-blue-500 font-medium">Learn more about our safety → (See Report Flow)</button>
+                        <button onClick={() => navigate('report')} className="text-blue-500">
+                            See Report Flow →
+                        </button>
                     </div>
                 </div>
             );
 
             const ReportScreen = () => (
                 <div className="min-h-screen bg-white max-w-md mx-auto">
-                    {!showReportStep2 ? (
-                        <>
-                            <div className="p-4 border-b">
-                                <h1 className="font-bold text-xl">Report This Post</h1>
+                    <div className="p-4 border-b">
+                        <h1 className="font-bold text-xl">Report This Post</h1>
+                    </div>
+                    <div className="p-4">
+                        <h2 className="font-semibold mb-4">Why are you reporting?</h2>
+                        <div className="space-y-3">
+                            {['Makes me uncomfortable', 'Mean or bullying', 'Someone in danger'].map((reason) => (
+                                <button
+                                    key={reason}
+                                    onClick={() => setShowReportStep2(true)}
+                                    className="w-full p-4 border-2 rounded-xl text-left"
+                                >
+                                    {reason}
+                                </button>
+                            ))}
+                        </div>
+                        {showReportStep2 && (
+                            <div className="mt-6 bg-blue-50 border-2 rounded-xl p-4">
+                                <p className="font-semibold mb-2">What happens next?</p>
+                                <p className="text-sm">We'll review in 4 hours</p>
+                                <button onClick={() => navigate('safety')} className="w-full mt-4 py-3 bg-blue-500 text-white rounded-xl">
+                                    Send Report
+                                </button>
                             </div>
-                            <div className="p-4">
-                                <div className="bg-gray-100 h-32 rounded-lg mb-6 flex items-center justify-center text-gray-400">[Screenshot of flagged post]</div>
-                                <h2 className="font-semibold mb-4">Why are you reporting this?</h2>
-                                <div className="space-y-3">
-                                    {[
-                                        { emoji: '😟', text: 'Makes me uncomfortable' },
-                                        { emoji: '🚫', text: 'Mean or bullying' },
-                                        { emoji: '⚠️', text: 'Inappropriate content' },
-                                        { emoji: '🆘', text: 'Someone might be in danger' },
-                                        { emoji: '🤔', text: 'Something else' }
-                                    ].map((option) => (
-                                        <button
-                                            key={option.text}
-                                            onClick={() => setShowReportStep2(true)}
-                                            className="w-full p-4 border-2 rounded-xl text-left hover:border-blue-500 transition-colors flex items-center gap-3"
-                                        >
-                                            <span className="text-2xl">{option.emoji}</span>
-                                            <span className="font-medium">{option.text}</span>
-                                        </button>
-                                    ))}
-                                </div>
-                                <div className="flex gap-3 mt-6">
-                                    <button onClick={() => navigate('safety')} className="flex-1 py-3 border-2 rounded-xl font-medium">Cancel</button>
-                                    <button className="flex-1 py-3 bg-gray-200 text-gray-400 rounded-xl font-medium">Next</button>
-                                </div>
-                            </div>
-                        </>
-                    ) : (
-                        <>
-                            <div className="p-4 border-b">
-                                <h1 className="font-bold text-xl">Almost Done</h1>
-                            </div>
-                            <div className="p-4">
-                                <h2 className="font-semibold mb-3">Want to tell us more? (optional)</h2>
-                                <textarea className="w-full border-2 rounded-xl p-4 mb-6 h-32" placeholder="Additional details..."></textarea>
-                                <h2 className="font-semibold mb-3">What happens next?</h2>
-                                <div className="space-y-2 mb-6">
-                                    <p className="flex items-start gap-2 text-sm">
-                                        <span className="text-green-500">✓</span>
-                                        <span>We'll review this in 4 hours</span>
-                                    </p>
-                                    <p className="flex items-start gap-2 text-sm">
-                                        <span className="text-green-500">✓</span>
-                                        <span>You won't see this person's posts while we review</span>
-                                    </p>
-                                    <p className="flex items-start gap-2 text-sm">
-                                        <span className="text-green-500">✓</span>
-                                        <span>We'll let you know what we decide</span>
-                                    </p>
-                                </div>
-                                <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
-                                    <p className="font-semibold mb-2">📞 Need to talk to someone now?</p>
-                                    <p className="text-sm">Call our support line:</p>
-                                    <p className="text-lg font-bold">1-833-XXX-XXXX</p>
-                                </div>
-                                <div className="flex gap-3">
-                                    <button onClick={() => setShowReportStep2(false)} className="flex-1 py-3 border-2 rounded-xl font-medium">Cancel</button>
-                                    <button onClick={() => { setShowReportStep2(false); navigate('safety'); }} className="flex-1 py-3 bg-blue-500 text-white rounded-xl font-medium">Send Report</button>
-                                </div>
-                            </div>
-                        </>
-                    )}
+                        )}
+                    </div>
                 </div>
             );
 
             const PricingScreen = () => (
-                <div className="min-h-screen bg-white max-w-md mx-auto pb-20">
-                    <div className="p-4 border-b flex justify-between items-center">
-                        <h1 className="font-bold text-xl">Choose Your Plan</h1>
-                        <button onClick={() => navigate('parent')} className="text-2xl">✕</button>
+                <div className="min-h-screen bg-white max-w-md mx-auto">
+                    <div className="p-4 border-b">
+                        <button onClick={() => navigate('parent')}>← Pricing</button>
                     </div>
-                    <div className="p-4 space-y-4">
-                        <div className="border-2 border-gray-300 rounded-xl p-4">
-                            <h3 className="font-bold text-lg mb-3">FREE</h3>
-                            <ul className="space-y-2 mb-4 text-sm">
-                                <li>• Unlimited friends & posts</li>
-                                <li>• AI-powered feed</li>
-                                <li>• Family coordination</li>
-                                <li>• All community features</li>
-                                <li>• See relevant ads</li>
-                            </ul>
-                            <button className="w-full py-3 bg-gray-200 rounded-lg font-medium">Current Plan</button>
+                    <div className="p-4">
+                        <div className="border rounded-xl p-4 mb-4">
+                            <h3 className="font-bold mb-3">FREE</h3>
+                            <p className="text-sm mb-2">All core features</p>
+                            <button className="w-full py-2 bg-gray-200 rounded-lg">Current Plan</button>
                         </div>
-                        <div className="border-2 border-blue-500 rounded-xl p-4 relative">
-                            <div className="absolute -top-3 right-4 bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">⭐ Most Popular</div>
-                            <div className="flex justify-between items-start mb-3">
-                                <h3 className="font-bold text-lg">NEUROCONNECT PLUS</h3>
-                                <p className="font-bold text-blue-500">$19.99/mo</p>
-                            </div>
-                            <p className="text-sm text-gray-600 mb-3">Everything in Free, PLUS:</p>
-                            <ul className="space-y-2 mb-4 text-sm">
-                                <li className="flex items-center gap-2">
-                                    <span className="text-green-500">✓</span> Ad-free experience
-                                </li>
-                                <li className="flex items-center gap-2">
-                                    <span className="text-green-500">✓</span> Full content library (courses, workshops)
-                                </li>
-                                <li className="flex items-center gap-2">
-                                    <span className="text-green-500">✓</span> Early access to features
-                                </li>
-                            </ul>
-                            <button className="w-full py-3 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-600">Upgrade</button>
-                        </div>
-                        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 text-center">
-                            <p className="text-sm">💡 Save $40 with annual plan ($199/year)</p>
-                        </div>
-                        <div className="border-2 border-dashed border-gray-300 rounded-xl p-4">
-                            <h3 className="font-bold text-lg mb-2">Coming Soon: Pro Tier</h3>
-                            <ul className="space-y-2 mb-4 text-sm text-gray-600">
-                                <li>• Weekly mentor sessions</li>
-                                <li>• Video meeting rooms</li>
-                                <li>• Family success coach</li>
-                            </ul>
-                            <button className="w-full py-3 border-2 border-gray-300 rounded-lg font-medium">Join Waitlist</button>
+                        <div className="border-2 border-blue-500 rounded-xl p-4">
+                            <h3 className="font-bold mb-3">PLUS - $19.99/mo</h3>
+                            <p className="text-sm mb-2">Ad-free + advanced moderation</p>
+                            <button className="w-full py-2 bg-blue-500 text-white rounded-lg">Upgrade</button>
                         </div>
                     </div>
                 </div>
             );
 
             const MarketplaceScreen = () => (
-                <div className="min-h-screen bg-white max-w-md mx-auto pb-20">
-                    <div className="flex items-center gap-3 p-4 border-b">
-                        <button onClick={() => navigate('parent')} className="text-2xl">←</button>
-                        <h1 className="font-bold text-lg">Executive Function Strategies</h1>
+                <div className="min-h-screen bg-white max-w-md mx-auto">
+                    <div className="p-4 border-b">
+                        <button onClick={() => navigate('parent')}>← Course</button>
                     </div>
                     <div className="p-4">
-                        <div className="mb-4">
-                            <p className="font-semibold">Dr. Sarah Chen, OT</p>
-                            <div className="flex items-center gap-2 text-sm">
-                                <div className="flex items-center gap-1">
-                                    <span>⭐</span>
-                                    <span className="font-semibold">4.8</span>
-                                </div>
-                                <span className="text-gray-500">(127 reviews)</span>
-                            </div>
-                        </div>
-                        <div className="bg-gray-200 h-48 rounded-xl mb-4 flex items-center justify-center">
-                            <div className="text-center">
-                                <div className="text-4xl mb-2">▶️</div>
-                                <p className="text-sm">Course preview video</p>
-                            </div>
-                        </div>
-                        <div className="flex gap-4 mb-6 text-sm text-gray-600">
-                            <span>$79</span>
-                            <span>•</span>
-                            <span>6 modules</span>
-                            <span>•</span>
-                            <span>3h content</span>
-                        </div>
-                        <div className="mb-6">
-                            <h3 className="font-semibold mb-3">What You'll Learn:</h3>
-                            <ul className="space-y-2 text-sm">
-                                <li>• Planning & organization skills</li>
-                                <li>• Time management techniques</li>
-                                <li>• Breaking tasks into steps</li>
-                                <li>• Memory & attention strategies</li>
-                            </ul>
-                        </div>
-                        <button className="w-full py-4 bg-blue-500 text-white rounded-xl font-semibold mb-6">Buy Course • $79</button>
-                        <div className="mb-4">
-                            <h3 className="font-semibold mb-3">Reviews (127)</h3>
-                            <div className="bg-gray-50 border rounded-xl p-4 mb-4">
-                                <div className="grid grid-cols-2 gap-3 mb-3">
-                                    <div>
-                                        <p className="text-xs text-gray-600">Overall</p>
-                                        <div className="flex items-center gap-1">
-                                            <span>⭐⭐⭐⭐⭐</span>
-                                            <span className="ml-1 font-semibold">4.8</span>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <p className="text-xs text-gray-600">ND Understanding</p>
-                                        <div className="flex items-center gap-1">
-                                            <span>⭐⭐⭐⭐⭐</span>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <p className="text-xs text-gray-600">Clear Communication</p>
-                                        <div className="flex items-center gap-1">
-                                            <span>⭐⭐⭐⭐⭐</span>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <p className="text-xs text-gray-600">Practical/Actionable</p>
-                                        <div className="flex items-center gap-1">
-                                            <span>⭐⭐⭐⭐⭐</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="flex flex-wrap gap-2">
-                                    <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">✓ Helpful for ADHD</span>
-                                    <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">✓ Great for parents</span>
-                                    <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs">✓ Good for newly diagnosed</span>
-                                </div>
-                            </div>
-                            <h4 className="font-medium mb-2">Most Helpful Review</h4>
-                            <div className="border rounded-xl p-4">
-                                <div className="flex items-center gap-2 mb-2">
-                                    <span>⭐⭐⭐⭐⭐</span>
-                                    <span className="text-sm font-medium">by @ParentMike</span>
-                                </div>
-                                <span className="inline-block px-2 py-1 bg-green-100 text-green-700 rounded text-xs mb-2">✓ Verified Purchase</span>
-                                <p className="text-sm mb-3">"Finally a course that actually understands how ADHD brains work! The strategies are practical and my son is already using them. Worth every penny."</p>
-                                <div className="flex items-center justify-between text-sm">
-                                    <span className="text-gray-500">89 found this helpful</span>
-                                    <div className="flex gap-3">
-                                        <button className="text-blue-500">👍 Helpful</button>
-                                        <button className="text-gray-500">Report</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <button className="w-full text-blue-500 font-medium">See all reviews →</button>
+                        <h2 className="font-bold text-xl mb-2">Executive Function Skills</h2>
+                        <p className="text-sm text-gray-600 mb-4">Dr. Sarah Chen</p>
+                        <div className="bg-gray-200 h-48 rounded-xl mb-4"></div>
+                        <p className="mb-4">$79 • 6 modules</p>
+                        <button className="w-full py-4 bg-blue-500 text-white rounded-xl font-semibold">
+                            Buy Course
+                        </button>
                     </div>
                 </div>
             );
 
             const ServiceDirectoryScreen = () => (
                 <div className="min-h-screen bg-white max-w-md mx-auto">
-                    <div className="flex items-center gap-3 p-4 border-b">
-                        <button onClick={() => navigate('parent')} className="text-2xl">←</button>
-                        <h1 className="font-bold text-xl flex-1">Find Services</h1>
-                        <button>Filter</button>
+                    <div className="p-4 border-b">
+                        <button onClick={() => navigate('guide')}>← Services</button>
                     </div>
                     <div className="p-4">
-                        <div className="relative mb-6">
-                            <input type="text" placeholder="Search services..." className="w-full border-2 rounded-xl px-4 py-3 pr-10" />
-                            <span className="absolute right-3 top-3 text-xl">🔍</span>
-                        </div>
-                        <h2 className="font-semibold mb-4">Popular Categories</h2>
-                        <div className="space-y-3">
-                            {[
-                                { emoji: '🧠', name: 'Therapy & Counseling', count: 387 },
-                                { emoji: '📚', name: 'Educational Support', count: 214 },
-                                { emoji: '⚖️', name: 'Legal & IEP Advocacy', count: 156 },
-                                { emoji: '💼', name: 'Employment Services', count: 92 },
-                                { emoji: '🏠', name: 'Housing & Living Support', count: 78 }
-                            ].map((category) => (
-                                <button key={category.name} className="w-full border rounded-xl p-4 text-left hover:border-blue-500 transition-colors">
-                                    <div className="flex items-center gap-3">
-                                        <span className="text-3xl">{category.emoji}</span>
-                                        <div className="flex-1">
-                                            <h3 className="font-semibold">{category.name}</h3>
-                                            <p className="text-sm text-gray-500">{category.count} providers</p>
-                                        </div>
-                                        <span className="text-2xl">→</span>
-                                    </div>
-                                </button>
-                            ))}
-                        </div>
-                        <button className="w-full text-blue-500 font-medium mt-4">See all 60+ categories →</button>
+                        <h2 className="font-semibold mb-4">Find Services</h2>
+                        {['Therapy & Counseling', 'Educational Support', 'IEP Advocacy'].map((service) => (
+                            <div key={service} className="border rounded-xl p-4 mb-3">
+                                <h3 className="font-semibold">{service}</h3>
+                            </div>
+                        ))}
                     </div>
                 </div>
             );
 
             const CircleScreen = () => (
-                <div className="min-h-screen bg-white max-w-md mx-auto pb-20">
-                    <div className="flex justify-between items-center p-4 border-b">
-                        <button onClick={() => navigate('home')} className="flex items-center gap-2">
-                            <span className="text-2xl">←</span> ADHD Parent Support
-                        </button>
-                        <span className="text-2xl">⋮</span>
-                    </div>
+                <div className="min-h-screen bg-white max-w-md mx-auto">
                     <div className="p-4 border-b">
-                        <p className="text-sm mb-3">📋 About this circle</p>
-                        <p className="text-sm text-gray-600 mb-2">For parents navigating ADHD diagnosis, medication, school, and daily life. Share strategies, ask questions, support each other.</p>
-                        <p className="text-sm text-gray-500">4,127 members • Moderated</p>
-                        <div className="flex gap-2 mt-4">
-                            <button className="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium flex items-center gap-2">🔔 Following</button>
-                            <button className="px-4 py-2 border rounded-lg text-sm font-medium">📌 Pinned</button>
-                            <button className="px-4 py-2 border rounded-lg text-xl">🔍</button>
-                        </div>
+                        <button onClick={() => navigate('home')}>← ADHD Parent Support</button>
                     </div>
                     <div className="p-4">
-                        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-4">
-                            <p className="text-xs text-gray-600 mb-1">📌 Pinned Post</p>
-                            <h3 className="font-semibold mb-1">📄 Medication Guide 2025</h3>
-                            <p className="text-sm text-gray-600 mb-2">by @ModeratorDr.Kim</p>
-                            <p className="text-sm mb-2">Comprehensive guide to ADHD medications and side effects</p>
-                            <div className="flex items-center gap-2 text-sm text-gray-500">
-                                <span>💬</span>
-                                <span>127 comments</span>
-                            </div>
+                        <p className="text-sm text-gray-600 mb-4">4,127 members • Moderated</p>
+                        <div className="border rounded-xl p-4 mb-4">
+                            <h4 className="font-medium">Homework battles - help!</h4>
+                            <p className="text-sm text-gray-600">by @StressedMom • 2h ago</p>
                         </div>
-                        <h3 className="font-semibold mb-3">💭 Recent Discussions</h3>
-                        <div className="space-y-3">
-                            {[
-                                { title: '"Homework battles - help!"', author: '@StressedMom', time: '2h ago', preview: 'Every night is a struggle...', comments: 12 },
-                                { title: '"Diagnosis at 35 - wow"', author: '@LateDiscovery', time: '5h ago', preview: 'Everything makes sense now 🎉', comments: 38 },
-                                { title: '"Medication break for summer?"', author: '@WorriedDad', time: '1d ago', preview: 'Doctor suggested trying...', comments: 24 }
-                            ].map((post) => (
-                                <div key={post.title} className="border rounded-xl p-4">
-                                    <h4 className="font-medium mb-1">{post.title}</h4>
-                                    <p className="text-xs text-gray-500 mb-2">by {post.author} • {post.time}</p>
-                                    <p className="text-sm text-gray-600 mb-2">{post.preview}</p>
-                                    <div className="flex items-center gap-2 text-sm text-gray-500">
-                                        <span>💬</span>
-                                        <span>{post.comments} comments</span>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                        <button className="w-full py-4 bg-blue-500 text-white rounded-xl font-semibold mt-6 flex items-center justify-center gap-2">➕ Start a Discussion</button>
                     </div>
                 </div>
             );
 
             const screens = {
+                guide: <GuideScreen />,
                 onboarding: <OnboardingScreen />,
                 home: <HomeScreen />,
+                checkin: <DailyCheckInScreen />,
                 create: <CreateScreen />,
                 'find-friends': <FindFriendsScreen />,
-                family: <FamilyCoordinationScreen />,
+                sibling: <SiblingScreen />,
+                grandparent: <GrandparentScreen />,
                 parent: <ParentDashboardScreen />,
                 safety: <SafetyControlsScreen />,
                 report: <ReportScreen />,
